@@ -6,7 +6,20 @@ function AddUser (usuario) {
     .then(response=>{
         console.log(response)
         alert("sucesso")
-        setInterval(function ManterConexao(usuario){
+        sucessoAoCadastrar()
+
+    })
+    promise.catch(error => console.log(error))
+}
+
+function sucessoAoCadastrar() {
+
+    alert('cadastrouu')
+    setInterval(ManterConexao, 4000)
+}
+
+ 
+function ManterConexao(usuario){
     const promise = axios.post("https://mock-api.driven.com.br/api/v6/uol/status",{
         name: `${usuario}`
     })
@@ -15,11 +28,7 @@ function AddUser (usuario) {
         alert('Está mantendo a conexão')
     } )
     promise.catch(error => console.log(error)
-)},4000)
-
-    })
-    promise.catch(error => console.log(error))
-}
+)
 
 
 
@@ -44,12 +53,15 @@ function PegarUsuario (){
 PegarUsuario ()
 
 
+let envios=[]
+
+
  function envioMensagem(){
     const envio =document.querySelector("input").value;
    const mensagem =document.querySelector(".mensagem");
+    while(mensagem > envios.length){
     mensagem.innerHTML += `<div class="hora">(09:21:45)</div> <div class="remetente"><strong>${usuario}</strong>para<strong>Todos:</strong></div> 
-    <div class="checkin"> entra na sala...</div>
+    <div class="checkin"> entra na sala...</div>` }}
 
- }
+    envioMensagem()
 
- 

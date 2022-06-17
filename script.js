@@ -1,34 +1,33 @@
+let mensagens=[]
 
-function AddUser (usuario) {
+let nome = prompt("Diga seu nome")
+
+
+function AddUser () {
     const promise = axios.post("https://mock-api.driven.com.br/api/v6/uol/participants",{
-        name: `${usuario}`
+        name:`${nome}`
     })
     .then(response=>{
         console.log(response)
         alert("sucesso")
-        sucessoAoCadastrar()
-
+        setInterval(ManterConexao, 4000)
     })
     promise.catch(error => console.log(error))
 }
-
-function sucessoAoCadastrar() {
-
-    alert('cadastrouu')
-    setInterval(ManterConexao, 4000)
-}
+AddUser()
 
  
-function ManterConexao(usuario){
+function ManterConexao(){
     const promise = axios.post("https://mock-api.driven.com.br/api/v6/uol/status",{
-        name: `${usuario}`
+        name: `${nome}`
     })
     .then(response=>{
         console.log(response.data)
-        alert('Está mantendo a conexão')
+        console.log('Está mantendo a conexão')
     } )
     promise.catch(error => console.log(error)
 )
+}
 
 
 
@@ -44,24 +43,50 @@ function processarReposta(){
 
 processarReposta()
 
-function PegarUsuario (){
-    let usuario = prompt("Qual o seu lindo nome?")
-    AddUser (usuario)
-    ManterConexao(usuario)
+function BuscarMensagens(){
+    const promise = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages")
+
+    .then(response =>{
+        console.log(response.data)
+        mensagens = response.data
+        alert("mensagens resgatadas")
+        envioMensagem()
+    })
+    promise.catch(error => console.log(error))
 }
 
-PegarUsuario ()
-
+BuscarMensagens()
 
 let envios=[]
 
 
  function envioMensagem(){
-    const envio =document.querySelector("input").value;
-   const mensagem =document.querySelector(".mensagem");
-    while(mensagem > envios.length){
-    mensagem.innerHTML += `<div class="hora">(09:21:45)</div> <div class="remetente"><strong>${usuario}</strong>para<strong>Todos:</strong></div> 
-    <div class="checkin"> entra na sala...</div>` }}
-
-    envioMensagem()
-
+    const envio =document.querySelector(".input").value;
+   const mensagem =document.querySelector(".tela2");
+    for(i=0;i<mensagens.length;i++){
+        if(mensagens[i].type === "status"){
+       mensagem.innerHTML += `
+    <div class="mensagem status">
+         <div class="hora">(${mensagens[i].time})</div> <div class="remetente"><strong>${mensagens[i].from}</strong>para<strong>${mensagens[i].to}</strong></div> 
+    <div class="checkin">${mensagens[i].text} </div>
+    </div>
+    ` } }
+        if(mensagens[i].type === "message"){
+            mensagem.innerHTML += `
+            <div class="mensagem normal">
+                 <div class="hora">(${mensagens[i].time})</div> <div class="remetente"><strong>${mensagens[i].from}</strong>para<strong>${mensagens[i].to}</strong></div> 
+            <div class="checkin">${mensagens[i].text} </div>
+            </div>
+            ` } 
+        if(mensagens[i].type === "private_message"){
+            mensagem.innerHTML += `
+            <div class="mensagem reservada">
+                 <div class="hora">(${mensagens[i].time})</div> <div class="remetente"><strong>${mensagens[i].from}</strong>para<strong>${mensagens[i].to}</strong></div> 
+            <div class="checkin">${mensagens[i].text} </div>
+            </div>
+            ` 
+        }
+    }
+    
+ 
+    

@@ -1,6 +1,6 @@
 
 
-@media (max-width: 767px) {
+
     * {
     box-sizing: border-box;
 }
@@ -8,6 +8,10 @@
     body{
         width: 100%;
         background-color:#E5E5E5 ;
+    }
+
+    .hidden{
+        display: none;
     }
     /* BARRA DO TOPO  */
 	.top{
@@ -115,9 +119,10 @@
 
      input:active{
          border: none;
+         width: 100%
+         ;
      }
 /* BARRA DO BAIXO  */
 
 
 
-}

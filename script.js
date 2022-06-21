@@ -50,19 +50,39 @@ function BuscarMensagens(){
         console.log(response.data)
         mensagens = response.data
         alert("mensagens resgatadas")
-        envioMensagem()
+        GerarMensagens()
     })
     promise.catch(error => console.log(error))
 }
 
 BuscarMensagens()
 
-let envios=[]
+function envioMensagem(){
+    const texto =document.querySelector(".input").value;
+    const promise = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages",
+    {
+        from: `${nome}`,
+        to: "Todos",
+        text: `${texto}`,
+        type: "message" // ou "private_message" para o bônus
+    }
+    )
+    .then(response=>{
+        console.log(response.data)
+        console.log('Mensagem enviada')
+    } )
+    promise.catch(error => console.log(error)
+)
+}
 
 
- function envioMensagem(){
-    const envio =document.querySelector(".input").value;
+
+
+
+ function GerarMensagens(){
+    
    const mensagem =document.querySelector(".tela2");
+   mensagem.scrollIntoView()
     for(i=0;i<mensagens.length;i++){
         if(mensagens[i].type === "status"){
        mensagem.innerHTML += `

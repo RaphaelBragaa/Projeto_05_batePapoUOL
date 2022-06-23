@@ -46,12 +46,7 @@ processarReposta()
 function BuscarMensagens(){
     const promise = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages")
 
-    .then(response =>{
-        console.log(response.data)
-        mensagens = response.data
-        alert("mensagens resgatadas")
-        GerarMensagens()
-    })
+    promise.then(GerarMensagens)
     promise.catch(error => console.log(error))
 }
 
@@ -79,34 +74,35 @@ function envioMensagem(){
 
 
 
- function GerarMensagens(){
-    
+ function GerarMensagens(resposta){
+    console.log(resposta.data)
    const mensagem =document.querySelector(".tela2");
    mensagem.scrollIntoView()
-    for(i=0;i<mensagens.length;i++){
-        if(mensagens[i].type === "status"){
+    for(let i=0;i<resposta.data.length;i++){
+        const message = resposta.data[i];
+        if(message.type === "status"){
        mensagem.innerHTML += `
     <div class="mensagem status">
-         <div class="hora">(${mensagens[i].time})</div> <div class="remetente"><strong>${mensagens[i].from}</strong>para<strong>${mensagens[i].to}</strong></div> 
-    <div class="checkin">${mensagens[i].text} </div>
+         <div class="hora">(${resposta.data[i].time})</div> <div class="remetente"><strong>${resposta.data[i].from}</strong>para<strong>${resposta.data[i].to}</strong></div> 
+    <div class="checkin">${resposta.data[i].text} </div>
     </div>
-    ` } }
-        if(mensagens[i].type === "message"){
+    ` } 
+         if(message.type === "message"){
             mensagem.innerHTML += `
-            <div class="mensagem normal">
-                 <div class="hora">(${mensagens[i].time})</div> <div class="remetente"><strong>${mensagens[i].from}</strong>para<strong>${mensagens[i].to}</strong></div> 
-            <div class="checkin">${mensagens[i].text} </div>
-            </div>
-            ` } 
-        if(mensagens[i].type === "private_message"){
+         <div class="mensagem normal">
+                 <div class="hora">(${resposta.data[i].time})</div> <div class="remetente"><strong>${resposta.data[i].from}</strong>para<strong>${resposta.data[i].to}</strong></div> 
+            <div class="checkin">${resposta.data[i].text} </div>
+             </div>
+             ` } 
+        if(message.type === "private_message"){
             mensagem.innerHTML += `
             <div class="mensagem reservada">
-                 <div class="hora">(${mensagens[i].time})</div> <div class="remetente"><strong>${mensagens[i].from}</strong>para<strong>${mensagens[i].to}</strong></div> 
-            <div class="checkin">${mensagens[i].text} </div>
+                 <div class="hora">(${resposta.data[i].time})</div> <div class="remetente"><strong>${resposta.data[i].from}</strong>para<strong>${resposta.data[i].to}</strong></div> 
+            <div class="checkin">${resposta.data[i].text} </div>
             </div>
             ` 
         }
     }
-    
+}
  
     

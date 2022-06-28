@@ -1,5 +1,6 @@
 let mensagens=[]
 
+
 let nome = prompt("Diga seu nome")
 
 
@@ -8,7 +9,7 @@ function AddUser () {
         name:`${nome}`
     })
     .then(response=>{
-        console.log(response)
+
         alert("sucesso")
         setInterval(ManterConexao, 4000)
     })
@@ -21,9 +22,9 @@ function ManterConexao(){
     const promise = axios.post("https://mock-api.driven.com.br/api/v6/uol/status",{
         name: `${nome}`
     })
-    .then(response=>{
-        console.log(response.data)
+    promise.then(response=>{
         console.log('Está mantendo a conexão')
+        BuscarMensagens()
     } )
     promise.catch(error => console.log(error)
 )
@@ -35,7 +36,7 @@ function processarReposta(){
     const promise = axios.get("https://mock-api.driven.com.br/api/v6/uol/participants")
 
     .then(response=>{
-        console.log(response.data)
+      console.log(response)
     } )
     promise.catch(error => console.log(error))
 	
@@ -62,9 +63,9 @@ function envioMensagem(){
         type: "message" // ou "private_message" para o bônus
     }
     )
-    .then(response=>{
-        console.log(response.data)
-        console.log('Mensagem enviada')
+    promise.then(response=>{
+        console.log(response)
+        BuscarMensagens()
     } )
     promise.catch(error => console.log(error)
 )
@@ -75,7 +76,6 @@ function envioMensagem(){
 
 
  function GerarMensagens(resposta){
-    console.log(resposta.data)
    const mensagem =document.querySelector(".tela2");
    mensagem.scrollIntoView()
     for(let i=0;i<resposta.data.length;i++){
@@ -86,14 +86,16 @@ function envioMensagem(){
          <div class="hora">(${resposta.data[i].time})</div> <div class="remetente"><strong>${resposta.data[i].from}</strong>para<strong>${resposta.data[i].to}</strong></div> 
     <div class="checkin">${resposta.data[i].text} </div>
     </div>
-    ` } 
+    `               
+        } 
          if(message.type === "message"){
             mensagem.innerHTML += `
          <div class="mensagem normal">
                  <div class="hora">(${resposta.data[i].time})</div> <div class="remetente"><strong>${resposta.data[i].from}</strong>para<strong>${resposta.data[i].to}</strong></div> 
             <div class="checkin">${resposta.data[i].text} </div>
              </div>
-             ` } 
+             ` 
+            } 
         if(message.type === "private_message"){
             mensagem.innerHTML += `
             <div class="mensagem reservada">
@@ -102,7 +104,16 @@ function envioMensagem(){
             </div>
             ` 
         }
+          
     }
 }
+
+
+function Descida(){
+    console.log("deu certo?")
+    const UltimoMensagem = document.querySelector(".envio")
+    UltimoMensagem.scrollIntoView();
+}
+setInterval(Descida,100)
  
     
